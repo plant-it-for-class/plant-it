@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content>
+        <v-toolbar>
+           <v-toolbar-title>PlanT-It</v-toolbar-title>
+           <v-spacer></v-spacer>
+           <v-toolbar-items class="hidden-sm-and-down">
+             <v-btn href="" flat>Start Action</v-btn>
+             <v-btn href="test-vue.html" flat>Home</v-btn>
+           </v-toolbar-items>
+         </v-toolbar>
+         <br>
+        <v-layout align-space-between justify-space-around row/ id="adding-place">
+            <v-card min-width="25%" max-width="25%">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">Calendar</h3>
+                  <div>
+                    <v-flex>
+                      <v-select
+                        v-model="type"
+                        :items="typeOptions"
+                        label="Type"
+                      ></v-select>
+                    </v-flex>
+                    <v-layout wrap>
+                    <v-flex
+                      xs10
+                      class="mb-3"
+                    >
+                      <v-sheet height="400">
+                        <v-calendar
+                          ref="calendar"
+                          v-model="start"
+                          :type="type"
+                          :end="end"
+                          color="primary"
+                        ></v-calendar>
+                      </v-sheet>
+                    </v-flex>
+
+                    <v-flex>
+                      <v-btn @click="$refs.calendar.prev()">
+                        <v-icon
+                          dark
+                          left
+                        >
+                          keyboard_arrow_left
+                        </v-icon>
+                        Prev
+                      </v-btn>
+
+                      <v-btn @click="$refs.calendar.next()">
+                        Next
+                        <v-icon right>
+                          keyboard_arrow_right
+                        </v-icon>
+                      </v-btn>
+                      <br>
+                      <v-btn @click="$refs.calendar.next()">
+                        +
+                      </v-btn>
+                      <form></form>
+                    </v-flex>
+                  </v-layout>
+                </div>
+                </div>
+              </v-card-title>
+            </v-card>
+
+            <v-card min-width="25%" max-width="25%">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">To-Do</h3>
+                  <br>
+                  <div>
+                    <v-layout row>
+                        <v-flex>
+                          <v-card>
+                            <v-list two-line>
+                              <template v-for="(item, index) in items">
+                                <v-divider
+                                  v-if="item.divider"
+                                  :key="index"
+                                  :inset="item.inset"
+                                ></v-divider>
+
+                                <v-list-tile
+                                  v-else
+                                  :key="item.title"
+                                >
+                                  <v-list-tile-content>
+                                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                    <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                  </v-list-tile-content>
+
+                                </v-list-tile>
+                              </template>
+                            </v-list>
+                          </v-card>
+                        </v-flex>
+                      </v-layout>
+                  </div>
+                </div>
+              </v-card-title>
+
+              <v-card-actions>
+                <v-btn @click="add_new" color="green">+</v-btn>
+              </v-card-actions>
+
+              <v-form
+                  v-if=this.clicked
+                  ref="form"
+                  lazy-validation
+                >
+                  <v-text-field
+                    v-model="assignment"
+                    label="Name"
+                    full-width="false"
+                    box="true"
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="assignmentinfo"
+                    label="Info"
+                    full-width="false"
+                    box="true"
+                  ></v-text-field>
+
+                  <v-btn
+                    @click="validate()"
+                  >
+                    Enter
+                  </v-btn>
+
+                </v-form>
+
+            </v-card>
+
+            <v-card min-width="25%" max-width="25%">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">Reminders</h3>
+                  <div>
+                    <v-layout row>
+                        <v-flex>
+                          <v-card>
+                            <v-list two-line>
+                              <template v-for="(item, index) in itemsr">
+                                <v-divider
+                                  v-if="item.divider"
+                                  :key="index"
+                                  :inset="item.inset"
+                                ></v-divider>
+
+                                <v-list-tile
+                                  v-else
+                                  :key="item.title"
+                                >
+                                  <v-list-tile-content>
+                                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                    <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                    <v-list-tile-sub-title v-html="item.subtitle2"></v-list-tile-sub-title>
+                                  </v-list-tile-content>
+
+                                </v-list-tile>
+                              </template>
+                            </v-list>
+                          </v-card>
+                        </v-flex>
+                      </v-layout>
+                    </div>
+                    </div>
+                    </v-card-title>
+
+                    <v-card-actions>
+                    <v-btn @click="add_newr" color="green">+</v-btn>
+                    </v-card-actions>
+
+                    <v-form
+                    v-if=this.clickedr
+                    ref="form"
+                    lazy-validation
+                    >
+                    <v-text-field
+                    v-model="assignment"
+                    label="Name"
+                    full-width="false"
+                    box="true"
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="assignmentinfo"
+                    label="Info"
+                    full-width="false"
+                    box="true"
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="assignmentdate"
+                    label="Date"
+                    full-width="false"
+                    box="true"
+                    ></v-text-field>
+
+                    <v-btn @click="validater()" >
+                    Enter
+                    </v-btn>
+
+                    </v-form>
+                  </div>
+                </div>
+              </v-card-title>
+
+              <v-card-actions>
+                <v-btn flat color="green">+</v-btn>
+              </v-card-actions>
+            </v-card>
+        </v-layout>
+       </v-content>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue!',
+        event: {
+          title: '',
+          start: '',
+          end: '',
+          cssClass: '',
+            data: {
+              description: ''
+            }
+        },
+        assignment: '',
+        assignmentinfo: '',
+        assignmentdate: '',
+        clicked: false,
+        clickedr: false,
+        card_text: 'wow',
+        type: 'day',
+        start: '2019-01-01',
+        end: '2020-01-06',
+        typeOptions: [
+          { text: 'Day', value: 'day' },
+          { text: 'Week', value: 'week' }
+        ],
+        items: [
+          {
+            title: 'Assignment 1',
+            subtitle: "EECS 330"
+          },
+          { divider: true, inset: true },
+          {
+            title: 'Assignment 2',
+            subtitle: "EECS 330"
+          },
+          { divider: true, inset: true },
+          {
+            title: 'Assignment 3',
+            subtitle: "EECS 330"
+          }
+        ],
+        itemsr: [
+          {
+            title: 'Exam 1',
+            subtitle: "EECS 330",
+            subtitle2: "March 3"
+          },
+          { divider: true, inset: true },
+          {
+            title: 'Midterm 2',
+            subtitle: "EECS 330",
+            subtitle2: "March 15"
+          }
+        ]
+      },
+      methods: {
+        add_new() {
+          this.clicked = true
+        },
+        validate() {
+          this.items.push({ divider: true, inset: true })
+          this.items.push(
+            {
+              title: this.assignment,
+              subtitle: this.assignmentinfo
+            })
+            this.assignment = ''
+            this.assignmentinfo = ''
+          this.clicked = false
+        },
+        add_newr() {
+          this.clickedr = true
+        },
+        validater() {
+          this.itemsr.push({ divider: true, inset: true })
+          this.itemsr.push(
+            {
+              title: this.assignment,
+              subtitle: this.assignmentinfo,
+              subtitle2: this.assignmentdate
+            })
+            this.assignment = ''
+            this.assignmentinfo = ''
+            this.assignmentdate = ''
+          this.clickedr = false
+        }
+      }
+    })
+  </script>
+</body>
+</html>
