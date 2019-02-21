@@ -23,6 +23,7 @@
               <v-card-title primary-title>
                 <h1 class="headline mb-0">Calendar</h1>
               </v-card-title>
+              <v-layout column align-center>
                     <v-flex max-width="75%">
                       <v-select
                         v-model="type"
@@ -45,32 +46,34 @@
                         ></v-calendar>
                       </v-sheet>
                     </v-flex>
+                    <v-layout align-center>
+                      <v-flex>
+                        <v-btn @click="$refs.calendar.prev()">
+                          <v-icon
+                            dark
+                            left
+                          >
+                            keyboard_arrow_left
+                          </v-icon>
+                          Prev
+                        </v-btn>
 
-                    <v-flex justify-end>
-                      <v-btn @click="$refs.calendar.prev()">
-                        <v-icon
-                          dark
-                          left
-                        >
-                          keyboard_arrow_left
-                        </v-icon>
-                        Prev
-                      </v-btn>
-
-                      <v-btn @click="$refs.calendar.next()">
-                        Next
-                        <v-icon right>
-                          keyboard_arrow_right
-                        </v-icon>
-                      </v-btn>
-                      <br>
-                      <v-btn fab @click="$refs.calendar.next()" class="circle_button">
-                        <v-icon large color="green">
-                          add
-                        </v-icon>
-                      </v-btn>
-                    </v-flex>
+                        <v-btn @click="$refs.calendar.next()">
+                          Next
+                          <v-icon right>
+                            keyboard_arrow_right
+                          </v-icon>
+                        </v-btn>
+                        <br>
+                        <v-btn fab @click="$refs.calendar.next()" class="circle_button">
+                          <v-icon large color="green">
+                            add
+                          </v-icon>
+                        </v-btn>
+                      </v-flex>
+                    </v-layout>
                   </v-layout>
+                </v-layout>
             </v-card>
 
             <v-card min-width="25%" max-width="25%">
@@ -101,10 +104,11 @@
                       </v-list>
                     </v-card>
                   </v-flex>
+                  
                   <v-card-actions>
                     <v-flex>
-                      <v-btn fab @click="add_new">
-                        <v-icon large color="green" class="circle_button">
+                      <v-btn fab @click="add_new" class="circle_button">
+                        <v-icon large color="green">
                           add
                         </v-icon>
                       </v-btn>
@@ -170,6 +174,7 @@
                         </v-card>
                       </v-flex>
 
+
                       <v-card-actions>
                         <v-flex>
                           <v-btn fab @click="add_newr" class="circle_button">
@@ -222,6 +227,14 @@
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script>
 
+    Vue.use(Vuetify, {
+      theme: {
+        primary: '#6fd88d',
+        secondary: '#83de9d',
+        accent: '#abe8bd',
+        error: '#b71c1c'
+      }
+    })
 
     var app = new Vue({
       el: '#app',
@@ -318,6 +331,9 @@
   <style>
     .circle_button {
       float: right;
+    }
+    v-toolbar-title{
+      color: white;
     }
   </style>
 </body>
