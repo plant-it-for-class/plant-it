@@ -1,0 +1,66 @@
+body {
+  font-family: 'Bitter', serif;
+}
+
+#bar {
+  width: 1375px;
+  height: 80px;
+  background-color: #84e184;
+  position: relative;
+}
+
+h1 {
+  display: inline-block;
+  margin-left: 3px;
+}
+
+#score {
+  margin-left: 725px;
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  background-color: #c2f0c2;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 25px;
+  border: 2px solid black;
+}
+
+.top_buttons {
+  font-size: 20px;
+  width: 120px;
+  height: 60px;
+  padding: 20px 0;
+  border: 2px solid black;
+  text-align: center;
+  background-color: #5bd75b;
+}
+
+#home {
+  margin-left: 60px;
+}
+
+#current_button {
+  margin-left: 40px;
+  background-color: #28a428;
+}
+
+#account {
+  margin-left: 30px;
+  height: 50px;
+  width: 50px;
+  background-color: #84e184;
+  border: 1px solid #84e184;
+}
+
+.body_buttons {
+  margin-left: 1000px;
+  font-size: 30px;
+  display: inline-block;
+  position: relative;
+}
+
+.bottom_buttons {
+  margin-top: 300px;
+  
+}
