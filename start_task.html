@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content>
+        <v-toolbar color="light-green">
+           <v-toolbar-title>PlanT-It</v-toolbar-title>
+           <v-spacer></v-spacer>
+           <v-toolbar-items class="hidden-sm-and-down">
+             <v-btn href="start_task.html" flat>Start Action</v-btn>
+             <v-btn href="index.html" flat>Home</v-btn>
+           </v-toolbar-items>
+         </v-toolbar>
+         <br>
+
+         <v-layout v-if="!done">
+           <br><br>
+           <v-flex sm3 offset-xs1>
+             <v-card>
+               <h1>Timer</h1>
+               <h1 v-if="this.clicked && this.curMin >= 0 && this.curSec >= 0">{{ curMin }}:
+                 <span v-if="curSec < 10">{{curSec}}0 </span>
+                 <span v-else>{{curSec}} </span>
+               </h1>
+               <h1 v-else> {{ tempMin }}:
+                 <span v-if="tempSec < 10">{{tempSec}}0 </span>
+                 <span v-else>{{tempSec}} </span>
+               </h1>
+               <v-flex sm1 sm8 offset-sm2>
+                 <v-btn @click="begin()">Start</v-btn>
+                 <v-btn @click="pause()">Pause</v-btn>
+                 <v-flex offset-sm1>
+                   <v-btn @click="congrats()">Complete Task</v-btn>
+                 </v-flex>
+               </v-flex>
+             </v-card>
+
+             <br><br>
+
+             <v-card>
+               <v-flex sm1 sm8 offset-sm2>
+                 <h1>Change Start Time</h1>
+                 <v-text-field v-model="time" type="number">
+                 {{ time }}
+                  </v-text-field>
+                </v-flex>
+                <v-flex sm1>
+                  <v-btn @click="setTime()"> Set Time</v-btn>
+                </v-flex>
+             </v-card>
+           </v-flex>
+
+            <v-flex xs12 sm6 offset-sm1>
+                <v-img
+                  :src=img
+                  max-height="600px"
+                ></v-img>
+
+                <h1> {{curAssignment}} </h1>
+
+                <v-btn @click="progressLeft()" color="green">
+                  <v-icon left>
+                    keyboard_arrow_left
+                  </v-icon>
+                </v-btn>
+                <v-btn @click="progressRight()" color="green" class="rightbutton">
+                  <v-icon right>
+                    keyboard_arrow_right
+                  </v-icon>
+                </v-btn>
+
+            </v-flex>
+          </v-layout>
+          <v-layout v-else>
+            <v-flex sm2 sm4 offset-sm4>
+              <v-card>
+                <v-flex offset-sm9>
+                  <v-btn @click="goBack()">x</v-btn>
+                </v-flex>
+                <h1>CONGRATS!</h1>
+                <h1>You've earned 100 points</h1>
+                <v-flex offset-sm1>
+                  <img :src=success[0]></img>
+                </v-flex>
+              <v-card>
+            <v-flex>
+          </v-layout>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        img: "https://media.giphy.com/media/4W1LrTtO42Uq3bfnw4/giphy.gif",
+        Assignments: [
+          {
+            name: "Assignment 1",
+            img: "https://media.giphy.com/media/4W1LrTtO42Uq3bfnw4/giphy.gif",
+            curMin: 15,
+            curSec: 0,
+          },
+          {
+            name: "Assignment 2",
+            img: "https://previews.123rf.com/images/natashachetkova/natashachetkova1607/natashachetkova160700098/60476136-cartoon-cute-succulents-in-pot-hand-drawing-isolated-objects-on-white-background-vector-illustration.jpg",
+            curMin: 15,
+            curSec: 0,
+          },
+          {
+            name: "Assignment 3",
+            img: "https://media.giphy.com/media/3oriNN5kkARo7ZAhuE/giphy.gif",
+            curMin: 15,
+            curSec: 0,
+          },
+          {
+            name: "Assignment 4",
+            img: "https://media.giphy.com/media/xVSFqvJuyxt8JzwZzy/giphy.gif",
+            curMin: 30,
+            curSec: 0,
+          }
+        ],
+        success: [
+          "https://media.giphy.com/media/l4FGzgD8mJwqUsIyQ/giphy.gif",
+        ],
+        curAssignment: 'Assignment 1',
+        curAssignNum: 0,
+        curMin: 0,
+        curSec: 00,
+        tempMin: 15,
+        tempSec: 0,
+        seconds: 100000000000000000000000,
+        clicked: false,
+        done: false,
+        time: 0
+
+      },
+      methods: {
+        progressRight() {
+          this.Assignments[this.curAssignNum].curMin = this.curMin
+          this.Assignments[this.curAssignNum].curSec = this.curSec
+
+          this.curAssignNum += 1
+          this.curAssignNum = this.curAssignNum % this.Assignments.length
+          this.curAssignment = this.Assignments[this.curAssignNum].name
+          this.img = this.Assignments[this.curAssignNum].img
+          this.curMin = this.Assignments[this.curAssignNum].curMin
+          this.curSec = this.Assignments[this.curAssignNum].curSec
+          this.pause()
+        },
+        progressLeft() {
+          this.Assignments[this.curAssignNum].curMin = this.curMin
+          this.Assignments[this.curAssignNum].curSec = this.curSec
+
+          if (this.curAssignNum == 0) {
+            this.curAssignNum = this.Assignments.length - 1
+          } else {
+            this.curAssignNum -= 1
+          }
+
+          this.curAssignment = this.Assignments[this.curAssignNum].name
+          this.img = this.Assignments[this.curAssignNum].img
+          this.curMin = this.Assignments[this.curAssignNum].curMin
+          this.curSec = this.Assignments[this.curAssignNum].curSec
+
+          this.pause()
+        },
+        begin() {
+            this.clicked = true
+            this.curMin = this.tempMin
+            this.curSec = this.tempSec
+        },
+        pause() {
+            this.tempMin = this.curMin
+            this.tempSec = this.curSec
+            this.clicked = false
+        },
+        congrats() {
+          this.curMin = 0
+          this.curSec = 0
+          this.pause()
+          this.done = true
+        },
+        goBack() {
+          this.done = false
+        },
+        setTime() {
+          this.Assignments[this.curAssignNum].curMin = this.time
+          this.Assignments[this.curAssignNum].curSec = 0
+          this.tempMin = this.time
+          this.tempSec = 0
+          this.curMin = this.time
+          this.curSec = 0
+        }
+      },
+      created() {
+        setInterval(() => {
+          if (this.curSec - 1 < 0) {
+            this.curMin -= 1
+            this.curSec = 59
+          } else {
+            this.curSec = this.curSec - 1
+          }
+
+          if (this.curSec <= 0 && this.curMin <= 0) {
+            clearInterval(1000)
+          }
+        }
+        , 1000)
+      }
+    })
+  </script>
+  <style>
+    h1 {
+      text-align: center;
+    }
+    .rightbutton {
+      float: right;
+    }
+  </style>
+</body>
+</html>
