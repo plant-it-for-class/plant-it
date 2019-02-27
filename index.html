@@ -197,21 +197,21 @@
                     lazy-validation
                     >
                       <v-text-field
-                      v-model="assignment"
+                      v-model="assignmentr"
                       label="Name"
                       full-width="false"
                       box="true"
                       ></v-text-field>
 
                       <v-text-field
-                      v-model="assignmentinfo"
+                      v-model="assignmentinfor"
                       label="Info"
                       full-width="false"
                       box="true"
                       ></v-text-field>
 
                       <v-text-field
-                      v-model="assignmentdate"
+                      v-model="assignmentdater"
                       label="Date"
                       full-width="false"
                       box="true"
@@ -258,6 +258,9 @@
         assignment: '',
         assignmentinfo: '',
         assignmentdate: '',
+        assignmentr: '',
+        assignmentinfor: '',
+        assignmentdater: '',
         clicked: false,
         clickedr: false,
         card_text: 'wow',
@@ -322,13 +325,13 @@
           this.itemsr.push({ divider: true, inset: true })
           this.itemsr.push(
             {
-              title: this.assignment,
-              subtitle: this.assignmentinfo,
-              subtitle2: this.assignmentdate
+              title: this.assignmentr,
+              subtitle: this.assignmentinfor,
+              subtitle2: this.assignmentdater
             })
-            this.assignment = ''
-            this.assignmentinfo = ''
-            this.assignmentdate = ''
+            this.assignmentr = ''
+            this.assignmentinfor = ''
+            this.assignmentdater = ''
           this.clickedr = false
         }
       }
