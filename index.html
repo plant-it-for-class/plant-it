@@ -9,7 +9,7 @@
   <div id="app">
     <v-app>
       <v-content>
-        <v-toolbar color="light-green">
+        <v-toolbar color="#62BD69">
            <v-toolbar-title>PlanT-It</v-toolbar-title>
            <v-img
             src="Flower-Pot-Vector.png"
@@ -24,13 +24,15 @@
            </v-toolbar-items>
          </v-toolbar>
          <br>
-        <v-layout align-space-between justify-space-around row id="adding-place">
-            <v-card min-width="25%" max-width="25%">
-              <v-card-title primary-title>
-                <h1 class="headline mb-0">Calendar</h1>
-              </v-card-title>
+        <v-layout align-space-between justify-space-around row wrap id="adding-place">
+            <v-card :min-width=this.minWidth max-width="25%">
+              <!-- <v-card-title primary-title>
+                <h1 class="headline mb-0" @click="Expand()">Calendar</h1>
+              </v-card-title> -->
+              <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>Calendar</v-toolbar-title></v-toolbar>
+              <br>
               <v-layout column align-center>
-                    <v-flex max-width="75%">
+                    <v-flex sm1 sm10>
                       <v-select
                         v-model="type"
                         :items="typeOptions"
@@ -82,11 +84,9 @@
                 </v-layout>
             </v-card>
 
-            <v-card min-width="25%" max-width="25%">
-              <v-card-title primary-title min-width="100%">
-                  <h3 class="headline mb-0">To-Do</h3>
-                  <br>
-              </v-card-title>
+            <v-card :min-width=minWidth max-width="25%">
+              <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>To-Do</v-toolbar-title></v-toolbar>
+              <br>
 
               <v-layout column>
                   <v-flex>
@@ -100,11 +100,26 @@
                           <v-list-tile
                             v-else
                             :key="item.title"
+                            ripple
                           >
+
                             <v-list-tile-content>
-                              <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                              <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                              <v-layout align-center row>
+                                <v-flex>
+                                  <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                  <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                </v-flex>
+                                <v-flex offset-xs10>
+                                  <v-icon :color="item.color">
+                                      spa
+                                  </v-icon>
+
+                                </v-flex>
+                                <v-btn fab flat small @click="items.splice(i, 1)">x</v-btn>
+
+                              </v-layout>
                             </v-list-tile-content>
+
                           </v-list-tile>
                         </template>
                       </v-list>
@@ -126,33 +141,29 @@
                       ref="form"
                       lazy-validation
                     >
-                      <v-text-field
-                        v-model="assignment"
-                        label="Name"
-                        full-width="false"
-                        box="true"
-                      ></v-text-field>
+                    <v-flex sm1 sm10 offset-xs1>
+                      <v-text-field v-model="assignment" label="Name"></v-text-field>
 
-                      <v-text-field
-                        v-model="assignmentinfo"
-                        label="Info"
-                        full-width="false"
-                        box="true"
-                      ></v-text-field>
+                      <v-text-field v-model="assignmentinfo" label="Info" ></v-text-field>
+
+                      <v-select
+                        v-model="select"
+                        :items="colors"
+                        label="Colors"
+                      ></v-select>
 
                       <v-btn @click="validate()">
                         Enter
                       </v-btn>
+                    </v-flex>
 
                     </v-form>
                 </v-layout>
             </v-card>
 
-            <v-card min-width="25%" max-width="25%">
-              <v-card-title primary-title>
-                  <h3 class="headline mb-0">Reminders</h3>
-              </v-card-title>
-                  <br>
+            <v-card :min-width=minWidth max-width="25%">
+              <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>Reminders</v-toolbar-title></v-toolbar>
+              <br>
                   <v-layout column>
                       <v-flex>
                         <v-card>
@@ -168,7 +179,7 @@
                                 :key="item.title"
                                 xs12
                               >
-                                <v-list-tile-content>
+                                <v-list-tile-content >
                                   <v-list-tile-title v-html="item.title"></v-list-tile-title>
                                   <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
                                   <v-list-tile-sub-title v-html="item.subtitle2"></v-list-tile-sub-title>
@@ -196,30 +207,17 @@
                     ref="form"
                     lazy-validation
                     >
-                      <v-text-field
-                      v-model="assignmentr"
-                      label="Name"
-                      full-width="false"
-                      box="true"
-                      ></v-text-field>
+                      <v-flex sm1 sm10 offset-xs1>
+                        <v-text-field v-model="assignmentr" label="Name" ></v-text-field>
 
-                      <v-text-field
-                      v-model="assignmentinfor"
-                      label="Info"
-                      full-width="false"
-                      box="true"
-                      ></v-text-field>
+                        <v-text-field v-model="assignmentinfor" label="Info"></v-text-field>
 
-                      <v-text-field
-                      v-model="assignmentdater"
-                      label="Date"
-                      full-width="false"
-                      box="true"
-                      ></v-text-field>
+                        <v-text-field v-model="assignmentdater" label="Date"></v-text-field>
 
-                      <v-btn @click="validater()" >
-                      Enter
-                      </v-btn>
+                        <v-btn @click="validater()" >
+                        Enter
+                        </v-btn>
+                      </v-flex>
                     </v-form>
 
               </v-layout>
@@ -255,6 +253,7 @@
               description: ''
             }
         },
+        minWidth: "25%",
         assignment: '',
         assignmentinfo: '',
         assignmentdate: '',
@@ -274,17 +273,20 @@
         items: [
           {
             title: 'Assignment 1',
-            subtitle: "EECS 330"
+            subtitle: "EECS 330",
+            color: "red"
           },
           { divider: true, inset: true },
           {
             title: 'Assignment 2',
-            subtitle: "EECS 330"
+            subtitle: "EECS 330",
+            color: "blue"
           },
           { divider: true, inset: true },
           {
             title: 'Assignment 3',
-            subtitle: "EECS 330"
+            subtitle: "EECS 330",
+            color: "red"
           }
         ],
         itemsr: [
@@ -299,6 +301,16 @@
             subtitle: "EECS 330",
             subtitle2: "March 15"
           }
+        ],
+        select: '',
+        colors: [
+          "blue",
+          "red",
+          "green",
+          "yellow",
+          "pink",
+          "purple",
+          'light-grey'
         ]
       },
       methods: {
@@ -312,7 +324,8 @@
           this.items.push(
             {
               title: this.assignment,
-              subtitle: this.assignmentinfo
+              subtitle: this.assignmentinfo,
+              color: this.select
             })
             this.assignment = ''
             this.assignmentinfo = ''
@@ -333,6 +346,17 @@
             this.assignmentinfor = ''
             this.assignmentdater = ''
           this.clickedr = false
+        },
+        Expand() {
+          if (this.minWidth == "25%"){
+            this.minWidth = "70%"
+          } else {
+            this.minWidth = "25%"
+          }
+
+        },
+        remove() {
+          this.items.remove(item)
         }
       }
     })
