@@ -106,8 +106,10 @@
                             <v-list-tile-content>
                               <v-layout align-center row>
                                 <v-flex>
-                                  <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                                  <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                  <a href="start_task.html">
+                                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                    <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                  </a>
                                 </v-flex>
                                 <v-flex offset-xs10>
                                   <v-icon :color="item.color">

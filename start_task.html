@@ -23,6 +23,20 @@
            <br><br>
            <v-flex sm3 offset-xs1>
              <v-card>
+               <v-flex sm1 sm8 offset-sm2>
+                 <h1>Change Start Time</h1>
+                 <v-text-field v-model="time" type="number" placeholder="Add Time">
+                 {{ time }}
+                  </v-text-field>
+                </v-flex>
+                <v-flex sm1>
+                  <v-btn @click="setTime()"> Set Time</v-btn>
+                </v-flex>
+             </v-card>
+
+             <br><br>
+
+             <v-card>
                <h1>Timer</h1>
                <h1 v-if="this.clicked && this.curMin >= 0 && this.curSec >= 0">{{ curMin }}:
                  <span v-if="curSec < 10">{{curSec}}0 </span>
@@ -42,18 +56,6 @@
              </v-card>
 
              <br><br>
-
-             <v-card>
-               <v-flex sm1 sm8 offset-sm2>
-                 <h1>Change Start Time</h1>
-                 <v-text-field v-model="time" type="number">
-                 {{ time }}
-                  </v-text-field>
-                </v-flex>
-                <v-flex sm1>
-                  <v-btn @click="setTime()"> Set Time</v-btn>
-                </v-flex>
-             </v-card>
            </v-flex>
 
             <v-flex xs12 sm6 offset-sm1>
@@ -138,7 +140,7 @@
         tempSec: 0,
         clicked: false,
         done: false,
-        time: 0
+        time: ''
 
       },
       methods: {
