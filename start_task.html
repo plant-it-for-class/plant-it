@@ -124,13 +124,14 @@
           <v-layout v-else>
             <v-flex sm2 sm4 offset-sm4>
               <v-card>
-                <v-flex offset-sm9>
+                <v-flex style="float: right;">
                   <v-btn @click="goBack()">x</v-btn>
                 </v-flex>
+                <br><br><br>
                 <h1>CONGRATS!</h1>
                 <h1>You've earned 100 points</h1>
-                <v-flex offset-sm1>
-                  <img :src=success[0]></img>
+                <v-flex>
+                  <img :src=success[0] width="100%"></img>
                 </v-flex>
               <v-card>
             <v-flex>
@@ -364,6 +365,7 @@
               name: "Done!!",
               done: true
             }
+            this.congrats()
           }
 
         },
