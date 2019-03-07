@@ -13,7 +13,7 @@
             <a href="index.html"><v-toolbar-title >PlanT-It</v-toolbar-title> </a>
            <v-spacer></v-spacer>
            <v-toolbar-items class="hidden-sm-and-down">
-             <v-btn href="start_task.html" flat>Start Action</v-btn>
+             <v-btn href="start_task.html" flat>Start To-Do</v-btn>
              <v-btn href="index.html" flat>Home</v-btn>
            </v-toolbar-items>
          </v-toolbar>
@@ -63,14 +63,17 @@
                <v-flex sm3 offset-xs1 v-else>
                  <v-btn @click="switch_action()">Switch to Timer</v-btn>
                  <br><br>
-                   <v-layout v-for="prog in this.Assignments[this.curAssignNum].progress">
+                   <v-layout v-for="prog, i in this.Assignments[this.curAssignNum].progress">
                      <v-flex sm1 sm10 offset-xs1 style="font-size: 20px;">
                        <v-card v-if="prog.finished" style="padding-left: 5%;" color="green">{{prog.name}}
+                         <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
                          <v-card-text class="date">Due: {{prog.date}}</v-card-text>
                        </v-card>
                        <v-card v-else-if="prog.current" style="padding-left: 5%;" color="yellow">{{prog.name}}
+                         <v-btn style="float:right;" @click="deleteEl(i, true)" flat>X</v-btn>
                        <v-card-text class="date"> Due: {{prog.date}}</v-card-text></v-card>
                        <v-card v-else style="padding-left: 5%;" color="red">{{prog.name}}
+                         <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
                        <v-card-text class="date">Due: {{prog.date}}</v-card-text></v-card>
                      </v-flex>
                   </v-layout>
@@ -293,6 +296,17 @@
 
       },
       methods: {
+        deleteEl(index, current) {
+          if (!current) {
+            this.Assignments[this.curAssignNum].progress.splice(index, 1)
+          } else {
+            this.Assignments[this.curAssignNum].progress.splice(index, 1)
+            if (index < this.Assignments[this.curAssignNum].progress.length) {
+              this.Assignments[this.curAssignNum].progress[index].current = true
+            }
+          }
+
+        },
         AddItem() {
           if (this.Assignments[this.curAssignNum].progress.length === 0) {
             this.Assignments[this.curAssignNum].progress.push({
