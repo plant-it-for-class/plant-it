@@ -23,7 +23,7 @@
              <v-layout v-if="!done">
                <br><br>
 
-               <v-flex sm3 offset-xs1 v-if="this.switched">
+               <!-- <v-flex sm3 offset-xs1 v-if="this.switched">
                  <v-btn @click="switch_action()">Switch to Progress</v-btn>
                  <v-card>
                    <v-flex sm1 sm8 offset-sm2>
@@ -59,68 +59,80 @@
                  </v-card>
 
                  <br><br>
-               </v-flex>
-               <v-flex sm3 offset-xs1 v-else>
-                 <v-btn @click="switch_action()">Switch to Timer</v-btn>
-                 <br><br>
+               </v-flex> -->
+               <v-flex sm3 offset-sm1>
+                 <v-card>
+                   <h1>Progress on {{this.Assignments[this.curAssignNum].name}}</h1>
+                 </v-card>
+                 <!-- <v-btn @click="switch_action()">Switch to Timer</v-btn> -->
+                 <br>
                    <v-layout v-for="prog, i in this.Assignments[this.curAssignNum].progress">
-                     <v-flex sm1 sm10 offset-xs1 style="font-size: 20px;">
-                       <v-card v-if="prog.finished" style="padding-left: 5%;" color="green">{{prog.name}}
-                         <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
-                         <v-card-text class="date">Due: {{prog.date}}</v-card-text>
+                     <v-flex sm1 sm10 offset-xs1 style="font-size: 18px;">
+                       <v-card>
+                         <v-card v-if="prog.finished" style="padding-left: 5%;" color="green">{{prog.name}}
+                           <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
+                           <div class="date">Due: {{prog.date}}</div>
+                         </v-card>
+
+                         <v-card v-else-if="prog.current" style="padding-left: 5%;" color="yellow">{{prog.name}}
+                           <v-btn style="float:right;" @click="deleteEl(i, true)" flat>X</v-btn>
+                         <div class="date"> Due: {{prog.date}}</div>
+                         </v-card>
+
+                         <v-card v-else style="padding-left: 5%;" color="red">{{prog.name}}
+                           <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
+                         <div class="date">Due: {{prog.date}}</div>
                        </v-card>
-                       <v-card v-else-if="prog.current" style="padding-left: 5%;" color="yellow">{{prog.name}}
-                         <v-btn style="float:right;" @click="deleteEl(i, true)" flat>X</v-btn>
-                       <v-card-text class="date"> Due: {{prog.date}}</v-card-text></v-card>
-                       <v-card v-else style="padding-left: 5%;" color="red">{{prog.name}}
-                         <v-btn style="float:right;" @click="deleteEl(i, false)" flat>X</v-btn>
-                       <v-card-text class="date">Due: {{prog.date}}</v-card-text></v-card>
+                      </v-card>
                      </v-flex>
                   </v-layout>
                   <br>
                   <div v-if="this.Assignments[this.curAssignNum].curTask && !this.Assignments[this.curAssignNum].curTask.done && this.Assignments[this.curAssignNum].complete === true">
-                    <v-btn @click="finishCurTask()">
+                    <v-btn @click="finishCurTask()" small>
                       Mark {{ Assignments[this.curAssignNum].progress[this.Assignments[this.curAssignNum].taskNum].name}} as Done
                     </v-btn>
-                    <v-btn @click=complete() justify-center>Add More Tasks!</v-btn>
+                    <v-btn @click=complete() justify-center small>Add More Tasks!</v-btn>
                   </div>
                   <v-card v-else-if="this.Assignments[this.curAssignNum].progress.length > 0 && this.Assignments[this.curAssignNum].complete === true">
                     Congrats! You've finished your assignment!
                   </v-card>
-                  <v-card v-else style="font-size: 20px;">
-                    Let's make a progress bar!
+                  <v-card v-else style="font-size: 20px; padding: 2%;">
+                    Let's make a progress bar! <br>
+                    <div style="font-size: 18px;">Hit Enter to Add to Progress</div>
                     <v-text-field v-on:keyup.enter="AddItem()" placeholder="Add Progress Item" v-model="item"></v-text-field>
                     <v-text-field v-on:keyup.enter="AddItem()" placeholder="Add Date For Item" v-model="date"></v-text-field>
                     <v-btn @click=complete() justify-center>Done Adding Progress!</v-btn>
                   </v-card>
                   <br><br>
-                  <v-layout>
-                    <v-card wrap style="font-size: 20px; padding: 5%;">
-                      Hello! Welcome to your progress bar for {{ Assignments[curAssignNum].name }}! Your finished tasks are marked in green, your current task is marked in yellow, and your future tasks are marked in red!
-                    </v-card>
-                  </v-layout>
                </v-flex>
 
 
             <v-flex xs12 sm6 offset-sm1>
+              <v-card style="padding: 2%; padding-top: 0%;">
+                  <v-card-text wrap style="font-size: 15px;">
+                    Hello! Welcome to your progress bar for {{ Assignments[curAssignNum].name }}! Your finished tasks are marked in green, your current task is marked in yellow, and your future tasks are marked in red!
+                  </v-card-text>
                 <v-img
                   :src=img
                   max-height="600px"
                 ></v-img>
 
-                <h1> {{ Assignments[curAssignNum].name }} </h1>
-
-                <v-btn @click="progressLeft()" color="green">
-                  <v-icon left>
-                    keyboard_arrow_left
-                  </v-icon>
-                </v-btn>
-                <v-btn @click="progressRight()" color="green" class="rightbutton">
-                  <v-icon right>
-                    keyboard_arrow_right
-                  </v-icon>
-                </v-btn>
-
+                <!-- <h1> {{ Assignments[curAssignNum].name }} </h1> -->
+                <div style="font-size: 20px; text-align: center;">
+                  <v-btn @click="progressLeft()" color="green" style="float: left;">
+                    <v-icon left>
+                      keyboard_arrow_left
+                    </v-icon>
+                  </v-btn>
+                  {{ Assignments[curAssignNum].name }}
+                  <v-btn @click="progressRight()" color="green" class="rightbutton">
+                    <v-icon right>
+                      keyboard_arrow_right
+                    </v-icon>
+                  </v-btn>
+                  <br><br>
+              </div>
+              </v-card>
               </v-flex>
             </v-layout>
 
