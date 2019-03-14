@@ -29,61 +29,11 @@
             <v-card :min-width=this.minWidth max-width="25%">
               <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>Calendar</v-toolbar-title></v-toolbar>
               <br>
-              <!-- <v-layout column align-center>
-                    <v-flex sm1 sm10>
-                      <v-select
-                        v-model="type"
-                        :items="typeOptions"
-                        label="Type"
-                      ></v-select>
-                    </v-flex>
-                    <v-layout wrap>
-                    <v-flex
-                      xs10
-                      class="mb-3"
-                    >
-                      <v-sheet height="400">
-                        <v-calendar
-                          ref="calendar"
-                          v-model="start"
-                          :type="type"
-                          :end="end"
-                          color="primary"
-                        ></v-calendar>
-                      </v-sheet>
-                    </v-flex>
-                    <v-layout align-center>
-                      <v-flex>
-                        <v-btn @click="$refs.calendar.prev()">
-                          <v-icon
-                            dark
-                            left
-                          >
-                            keyboard_arrow_left
-                          </v-icon>
-                          Prev
-                        </v-btn>
-
-                        <v-btn @click="$refs.calendar.next()">
-                          Next
-                          <v-icon right>
-                            keyboard_arrow_right
-                          </v-icon>
-                        </v-btn>
-                        <br>
-                        <v-btn fab @click="$refs.calendar.next()" class="circle_button">
-                          <v-icon large color="green">
-                            add
-                          </v-icon>
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </v-layout>
-                </v-layout> -->
                 <center>
-                <v-date-picker v-model="selectedDate" color="#91D196" input="nothing" :event-color="functionEventColor" :events="arrayEvents" reactive></v-date-picker>
-              </center>
+                  <v-date-picker style="padding-bottom: 2%" width="70%" v-model="selectedDate" color="#91D196" input="nothing" :event-color="functionEventColor" :events="arrayEvents" reactive></v-date-picker>
+                </center>
             </v-card>
+
 
             <v-card :min-width=minWidth max-width="25%">
               <v-toolbar align="center" color="#91D196"><v-toolbar-title @click="Expand()">To-Do</v-toolbar-title>
@@ -161,7 +111,7 @@
                       ></v-select>
 
                       Due Date
-                      <v-date-picker v-model="picker" reactive></v-date-picker>
+                      <v-date-picker v-model="picker" color="#91D196" reactive></v-date-picker>
 
                       <v-btn @click="validate()">
                         Enter
@@ -279,7 +229,7 @@
         clicked: false,
         clickedr: false,
         card_text: 'wow',
-        selectedDate: '',
+        selectedDate: new Date().toISOString().substr(0,10),
         type: 'day',
         start: '2019-01-01',
         end: '2020-01-06',
@@ -432,7 +382,7 @@
                 }
               }
             })
-            
+
             functionEventColor()
         },
         add_newr() {
