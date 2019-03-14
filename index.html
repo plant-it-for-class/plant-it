@@ -3,6 +3,7 @@
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <!-- <link href="https://github.com/richardtallent/vue-simple-calendar" rel="stylesheet"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body>
@@ -28,7 +29,7 @@
             <v-card :min-width=this.minWidth max-width="25%">
               <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>Calendar</v-toolbar-title></v-toolbar>
               <br>
-              <v-layout column align-center>
+              <!-- <v-layout column align-center>
                     <v-flex sm1 sm10>
                       <v-select
                         v-model="type"
@@ -78,11 +79,18 @@
                       </v-flex>
                     </v-layout>
                   </v-layout>
-                </v-layout>
+                </v-layout> -->
+                <center>
+                <v-date-picker v-model="selectedDate" color="#91D196" input="nothing" :event-color="functionEventColor" :events="arrayEvents" reactive></v-date-picker>
+              </center>
             </v-card>
 
             <v-card :min-width=minWidth max-width="25%">
-              <v-toolbar align="center" color="#91D196" @click="Expand()"><v-toolbar-title>To-Do</v-toolbar-title></v-toolbar>
+              <v-toolbar align="center" color="#91D196"><v-toolbar-title @click="Expand()">To-Do</v-toolbar-title>
+                <v-flex offset-xs2>
+                  <v-btn color="green" small @click="sort()">Sort by Date</v-btn>
+                </v-flex>
+              </v-toolbar>
               <br>
 
               <v-layout column>
@@ -111,10 +119,11 @@
                                   <a href="start_task.html">
                                     <v-list-tile-title v-html="item.title"></v-list-tile-title>
                                     <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                    <v-list-tile-sub-title v-html="item.date"></v-list-tile-sub-title>
                                   </a>
                                 </v-flex>
-                              
-                                <v-btn fab flat small @click="items.splice(i, 1)">x</v-btn>
+
+                                <v-btn fab flat small @click="if (i === 0) {items.splice(i, 2);} else { items.splice(i - 1, 2); }">x</v-btn>
 
                               </v-layout>
                             </v-list-tile-content>
@@ -151,6 +160,9 @@
                         label="Colors"
                       ></v-select>
 
+                      Due Date
+                      <v-date-picker v-model="picker" reactive></v-date-picker>
+
                       <v-btn @click="validate()">
                         Enter
                       </v-btn>
@@ -178,11 +190,14 @@
                                 :key="item.title"
                                 xs12
                               >
+                              <v-flex>
                                 <v-list-tile-content >
                                   <v-list-tile-title v-html="item.title"></v-list-tile-title>
                                   <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
                                   <v-list-tile-sub-title v-html="item.subtitle2"></v-list-tile-sub-title>
                                 </v-list-tile-content>
+                              </v-flex>
+                                <v-btn fab flat small @click="if (i === 0) {itemsr.splice(i, 2);} else { itemsr.splice(i - 1, 2); }">x</v-btn>
 
                               </v-list-tile>
                             </template>
@@ -211,7 +226,8 @@
 
                         <v-text-field v-model="assignmentinfor" v-on:keyup.enter="validater()" label="Info"></v-text-field>
 
-                        <v-text-field v-model="assignmentdater" v-on:keyup.enter="validater()" label="Date"></v-text-field>
+                        Due Date
+                        <v-date-picker v-model="pickerr" color="#91D196" reactive></v-date-picker>
 
                         <v-btn @click="validater()" >
                         Enter
@@ -229,6 +245,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script>
+    // import CalendarView from "vue-simple-calendar"
 
     Vue.use(Vuetify, {
       theme: {
@@ -262,6 +279,7 @@
         clicked: false,
         clickedr: false,
         card_text: 'wow',
+        selectedDate: '',
         type: 'day',
         start: '2019-01-01',
         end: '2020-01-06',
@@ -273,19 +291,22 @@
           {
             title: 'Assignment 1',
             subtitle: "EECS 330",
-            color: "red"
+            color: "red",
+            date: new Date("03/" + (new Date().getDate() + 8) + "/2019").toLocaleDateString("en-US")
           },
           { divider: true, inset: true },
           {
             title: 'Assignment 2',
             subtitle: "EECS 330",
-            color: "blue"
+            color: "blue",
+            date: new Date().toLocaleDateString("en-US")
           },
           { divider: true, inset: true },
           {
             title: 'Assignment 3',
             subtitle: "EECS 330",
-            color: "red"
+            color: "red",
+            date: new Date("03/" + (new Date().getDate() + 10) + "/2019").toLocaleDateString("en-US")
           }
         ],
         itemsr: [
@@ -310,9 +331,79 @@
           "pink",
           "purple",
           'light-grey'
-        ]
+        ],
+        picker: '',
+        pickerr: '',
+        arrayEvents: [],
+        arrayColor: []
+
+      },
+      mounted () {
+        this.items.forEach((item) => {
+          if (item.date) {
+            this.arrayEvents.push(new Date(item.date).toISOString().substr(0, 10))
+            if (item.color) {
+                this.arrayColor.push(item.color)
+            } else {
+              this.arrayColor.push("green")
+            }
+          }
+        })
+        // this.arrayEvents = [...Array(6)].map(() => {
+        //   const day = Math.floor(Math.random() * 30)
+        //   const d = new Date()
+        //   d.setDate(day)
+        //   return d.toISOString().substr(0, 10)
+        // })
       },
       methods: {
+        functionEventColor (date) {
+          var colors = []
+
+          this.items.forEach((item) => {
+            if (item.date) {
+
+              if ((item.date[0].toString() === date[6].toString()) &&
+                    (item.date.substring(2,4) === date.substring(8,10))) {
+                colors.push(item.color)
+              }
+            }
+          })
+          return colors
+        },
+        sort() {
+          var tempItems = []
+          var tempOthers = []
+          this.items.forEach(function(item) {
+            if (item.date) {
+              tempItems.push(item)
+            }
+            else if (item.title || item.subtitle || item.color) {
+              tempOthers.push(item)
+            }
+          })
+          tempItems.sort( function(a, b) { return new Date(a.date).getTime() - new Date(b.date).getTime() } )
+          console.log(tempItems[0].title)
+
+          var newitems = []
+          tempItems.forEach(function(item, i) {
+            newitems.push(item)
+            if (!(tempOthers.length === 0 && i === tempItems.length - 1)) {
+                newitems.push({ divider: true, inset: true })
+            }
+
+          })
+          tempOthers.forEach(function(item, i) {
+            newitems.push(item)
+            if (i !== tempItems.length - 1) {
+                newitems.push({ divider: true, inset: true })
+            }
+          })
+
+          this.items = newitems
+          // reload()
+
+        },
         add_new() {
           this.clicked = !this.clicked
         },
@@ -324,11 +415,25 @@
             {
               title: this.assignment,
               subtitle: this.assignmentinfo,
-              color: this.select
+              color: this.select,
+              date: new Date(this.picker).toLocaleDateString("en-US")
             })
             this.assignment = ''
             this.assignmentinfo = ''
-          this.clicked = false
+
+            this.clicked = false
+            this.items.forEach((item) => {
+              if (item.date) {
+                this.arrayEvents.push(new Date(item.date).toISOString().substr(0, 10))
+                if (item.color) {
+                    this.arrayColor.push(item.color)
+                } else {
+                  this.arrayColor.push("green")
+                }
+              }
+            })
+            
+            functionEventColor()
         },
         add_newr() {
           this.clickedr = !this.clickedr
@@ -339,7 +444,7 @@
             {
               title: this.assignmentr,
               subtitle: this.assignmentinfor,
-              subtitle2: this.assignmentdater
+              subtitle2: new Date(this.pickerr).toLocaleDateString("en-US")
             })
             this.assignmentr = ''
             this.assignmentinfor = ''
